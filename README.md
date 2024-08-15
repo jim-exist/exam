@@ -1,3 +1,8 @@
+How to run:
+Using maven and Java 8
+Run the following command: mvn clean install
+
+Project Summary:
 1. We need to calculate calendar schedules for project plans
 2. Each project plan consists of tasks. Every task has a certain duration.
 3. A task can depend on zero or more other tasks. If a task depends on some other tasks, it can only be started after these tasks are completed
