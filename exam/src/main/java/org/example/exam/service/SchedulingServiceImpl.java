@@ -34,6 +34,7 @@ public class SchedulingServiceImpl implements SchedulingService {
             logger.info("==============================");
             logger.info("Project Name: {}", task.getProject().getName());
             logger.info("Task Name: {}", task.getName());
+            logger.info("Task Duration: {}", task.getDuration());
             logger.info("Task Start Date: {}", task.getStartDate());
             logger.info("Task End Date: {}", task.getEndDate());
         }
@@ -46,16 +47,21 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
 
         LocalDate startDate = LocalDate.now();
-        if (task.getDependencies() != null) {
-            LocalDate latestEndDate = startDate;
-            for (Task dependency : task.getDependencies()) {
-                if (dependency.getEndDate() == null) {
-                    calculateStartDate(dependency, taskStartDates);
-                }
-                latestEndDate = dependency.getEndDate().isAfter(latestEndDate) ? dependency.getEndDate() : latestEndDate;
-            }
-            startDate = latestEndDate.plusDays(1);
+
+        if (task.getDependencies() == null || task.getDependencies().isEmpty()) {
+            task.setStartDate(startDate);
+            taskStartDates.put(task, startDate);
+            return;
         }
+
+        LocalDate latestEndDate = startDate;
+        for (Task dependency : task.getDependencies()) {
+            if (dependency.getEndDate() == null) {
+                calculateStartDate(dependency, taskStartDates);
+            }
+            latestEndDate = dependency.getEndDate().isAfter(latestEndDate) ? dependency.getEndDate() : latestEndDate;
+        }
+        startDate = latestEndDate.plusDays(1);
 
         task.setStartDate(startDate);
         taskStartDates.put(task, startDate);
