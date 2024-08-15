@@ -8,9 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class Mapper {
 
@@ -29,15 +26,4 @@ public class Mapper {
         return modelMapper.map(task, TaskDto.class);
     }
 
-    public List<ProjectDto> toProjectDtoList(List<Project> projects) {
-        return projects.stream()
-                .map(project -> modelMapper.map(project, ProjectDto.class))
-                .collect(Collectors.toList());
-    }
-
-    public List<TaskDto> toTaskDtoList(List<Task> tasks) {
-        return tasks.stream()
-                .map(task -> modelMapper.map(task, TaskDto.class))
-                .collect(Collectors.toList());
-    }
 }
